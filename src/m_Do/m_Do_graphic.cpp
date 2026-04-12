@@ -29,6 +29,7 @@
 #include "d/d_meter2_info.h"
 #include "d/d_s_play.h"
 #include "dusk/endian.h"
+#include "dusk/frame_interpolation.h"
 #include "dusk/gx_helper.h"
 #include "dusk/logging.h"
 #include "f_ap/f_ap_game.h"
@@ -39,7 +40,6 @@
 #include "m_Do/m_Do_graphic.h"
 #include "m_Do/m_Do_machine.h"
 #include "m_Do/m_Do_main.h"
-#include "dusk/frame_interpolation.h"
 #include "tracy/Tracy.hpp"
 
 #if PLATFORM_WII || PLATFORM_SHIELD
@@ -51,6 +51,7 @@
 #endif
 
 #if TARGET_PC
+#include "d/actor/d_a_horse.h"
 #include "dusk/imgui/ImGuiConsole.hpp"
 #include "dusk/dusk.h"
 #endif
@@ -1897,6 +1898,11 @@ int mDoGph_Painter() {
             j3dSys.setViewMtx(camera_p->view.viewMtx);
 #endif
             dKy_setLight();
+#if TARGET_PC
+            if (dusk::getSettings().game.enableFrameInterpolation) {
+                dKy_setLight_again();
+            }
+#endif
             GX_DEBUG_GROUP(dComIfGd_drawOpaListSky);
             GX_DEBUG_GROUP(dComIfGd_drawXluListSky);
 
@@ -1946,6 +1952,18 @@ int mDoGph_Painter() {
             } else {
                 GX_DEBUG_GROUP(dComIfGd_drawOpaListDark);
             }
+
+#if TARGET_PC
+            if (dusk::getSettings().game.enableFrameInterpolation) {
+                cXyz pres_eye;
+                dusk::frame_interp::camera_eye_from_view_mtx(j3dSys.getViewMtx(), &pres_eye);
+                // FRAME INTERP NOTE: Currently only recalculating points for Epona's reins. Need a more global solution.
+                if (daHorse_c* horse = dComIfGp_getHorseActor()) {
+                    horse->lerpControlPoints(dusk::frame_interp::get_interpolation_step());
+                }
+                g_dComIfG_gameInfo.drawlist.refresh3DlineMats(pres_eye);
+            }
+#endif
 
             GX_DEBUG_GROUP(dComIfGd_drawOpaListPacket);
             
