@@ -2288,6 +2288,19 @@ void dComIfGs_setupRandomizerSave() {
         throw std::runtime_error("Randomizer Generation Faild");
     auto world = randomizer.GetWorlds()[0].get();
 
+    // Setup randomizer data
+    auto& randoData = g_dComIfG_gameInfo.info.mRandomizer;
+    randoData.mActive = TRUE;
+    for (const auto& location : world->GetAllLocations()) {
+        const auto& metaData = location->GetMetadata();
+        if (location->HasCategories("Chest")) {
+            const auto& stage = metaData[0]["Stage"].as<std::string>();
+            const auto& tboxId = metaData[0]["Tbox ID"].as<u8>();
+            const auto& itemId = location->GetCurrentItem()->GetID();
+            randoData.mTreasureChestOverrides[stage][tboxId] = itemId;
+        }
+    }
+
     // Set starting flags
     auto startFlags = LoadYAML(RANDO_DATA_PATH "startflags.yaml");
     // Event Flags
@@ -2330,17 +2343,9 @@ void dComIfGs_setupRandomizerSave() {
         }
     }
 
-    // Setup randomizer data
-    auto& randoData = g_dComIfG_gameInfo.info.mRandomizer;
-    randoData.mActive = TRUE;
-    for (const auto& location : world->GetAllLocations()) {
-        const auto& metaData = location->GetMetadata();
-        if (location->HasCategories("Chest")) {
-            const auto& stage = metaData[0]["Stage"].as<std::string>();
-            const auto& tboxId = metaData[0]["Tbox ID"].as<u8>();
-            const auto& itemId = location->GetCurrentItem()->GetID();
-            randoData.mTreasureChestOverrides[stage][tboxId] = itemId;
-        }
+    // Set starting inventory
+    for (const auto& item: world->GetStartingItemPool()) {
+        execItemGet(static_cast<u8>(item->GetID()));
     }
 
     DuskLog.debug("Created Rando Save");
