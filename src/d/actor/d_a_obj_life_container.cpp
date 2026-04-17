@@ -103,6 +103,26 @@ int daObjLife_c::Create() {
 }
 
 void daObjLife_c::setEffect() {
+#if TARGET_PC
+    if (randomizer_IsActive()) {
+        // We don't want rupees or poe souls to sparkle. They are bright enough.
+        switch(m_itemNo)
+        {
+            case dItemNo_Randomizer_GREEN_RUPEE_e:
+            case dItemNo_Randomizer_BLUE_RUPEE_e:
+            case dItemNo_Randomizer_RED_RUPEE_e:
+            case dItemNo_Randomizer_YELLOW_RUPEE_e:
+            case dItemNo_Randomizer_LINKS_SAVINGS_e:
+            case dItemNo_Randomizer_PURPLE_RUPEE_e:
+            case dItemNo_Randomizer_ORANGE_RUPEE_e:
+            case dItemNo_Randomizer_SILVER_RUPEE_e:
+            case dItemNo_Randomizer_POU_SPIRIT_e:
+                return;
+            default:
+                break;
+        }
+    }
+#endif
     cXyz size(1.5f, 1.5f, 1.5f);
 
     if (mEffect0.getEmitter() == NULL) {
