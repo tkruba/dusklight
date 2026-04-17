@@ -449,7 +449,7 @@ void dSv_player_item_c::setLineUpItem() {
 
 #if TARGET_PC
     // Allow rando to use all item slots
-    if (dComIfG_isRandomizer()) {
+    if (randomizer_IsActive()) {
         mItemSlots[23] = 7;
     }
 #endif
@@ -1205,7 +1205,7 @@ void dSv_memBit_c::onDungeonItem(int i_no) {
     JUT_ASSERT(2969, 0 <= i_no && i_no < DSV_MEMBIT_ENUM_MAX);
 #if TARGET_PC
     // Don't use the stage life collection flag for rando
-    if (dComIfG_isRandomizer()) {
+    if (randomizer_IsActive()) {
         if (i_no == STAGE_LIFE) {
             return;
         }
@@ -1251,7 +1251,7 @@ void dSv_memBit_c::offDungeonItem(int i_no) {
     JUT_ASSERT(2983, 0 <= i_no && i_no < DSV_MEMBIT_ENUM_MAX);
 #if TARGET_PC
     // Don't use the stage life collection flag for rando
-    if (dComIfG_isRandomizer() && i_no == STAGE_LIFE) {
+    if (randomizer_IsActive() && i_no == STAGE_LIFE) {
         return;
     }
 #endif
@@ -1261,7 +1261,7 @@ void dSv_memBit_c::offDungeonItem(int i_no) {
 s32 dSv_memBit_c::isDungeonItem(int i_no) const {
     JUT_ASSERT(2998, 0 <= i_no && i_no < DSV_MEMBIT_ENUM_MAX);
 #if TARGET_PC
-    if (dComIfG_isRandomizer()) {
+    if (randomizer_IsActive()) {
         // Don't use the stage life collection flag for rando
         if (i_no == STAGE_LIFE) {
             return FALSE;
@@ -1644,11 +1644,6 @@ dSv_memory2_c* dSv_save_c::getSave2(int i_stage2No) {
     return &mSave2[i_stage2No];
 }
 
-void dSv_randomizer_c::clear() {
-    mTreasureChestOverrides.clear();
-    mPoeOverrides.clear();
-    mActive = FALSE;
-}
 
 void dSv_info_c::getSave(int i_stageNo) {
     JUT_ASSERT(4133, 0 <= i_stageNo && i_stageNo < dSv_save_c::STAGE_MAX);

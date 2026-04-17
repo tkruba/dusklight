@@ -239,6 +239,7 @@ namespace dusk {
         if (showMenu && ImGui::BeginMainMenuBar()) {
             m_menuGame.draw();
             m_menuEnhancements.draw();
+            m_menuRandomizer.draw();
             m_menuTools.draw();
 
             ImGui::SetCursorPosX(ImGui::GetWindowWidth() - 80.0f * ImGuiScale());
@@ -276,6 +277,8 @@ namespace dusk {
             m_menuTools.ShowSaveEditor();
         }
         m_menuTools.ShowStateShare();
+        m_menuRandomizer.windowRandoStats();
+        m_menuRandomizer.windowRandoGeneration();
         DuskDebugPad(); // temporary, remove later
 
         // Only show cursor when menu or any windows are open

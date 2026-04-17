@@ -533,7 +533,7 @@ int daDitem_c::execute() {
 
 #if TARGET_PC
     // Certain items use field models that are too big to fit in link's hands so we want to scale them down to fit.
-    if (dComIfG_isRandomizer()) {
+    if (randomizer_IsActive()) {
         switch (m_itemNo)
         {
             case dItemNo_Randomizer_MIRROR_PIECE_1_e:

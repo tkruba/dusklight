@@ -1362,6 +1362,8 @@ set(DUSK_FILES
         src/dusk/imgui/ImGuiMenuTools.hpp
         src/dusk/imgui/ImGuiMenuEnhancements.cpp
         src/dusk/imgui/ImGuiMenuEnhancements.hpp
+        src/dusk/imgui/ImGuiMenuRandomizer.cpp
+        src/dusk/imgui/ImGuiMenuRandomizer.hpp
         src/dusk/imgui/ImGuiPreLaunchWindow.cpp
         src/dusk/imgui/ImGuiPreLaunchWindow.hpp
         src/dusk/imgui/ImGuiFirstRunPreset.hpp
@@ -1389,6 +1391,8 @@ set(DUSK_FILES
         src/dusk/randomizer/game/tools.h
         src/dusk/randomizer/game/verify_item_functions.cpp
         src/dusk/randomizer/game/verify_item_functions.h
+        src/dusk/randomizer/game/randomizer_context.cpp
+        src/dusk/randomizer/game/randomizer_context.hpp
         src/dusk/randomizer/generator/logic/area.cpp
         src/dusk/randomizer/generator/logic/area.hpp
         src/dusk/randomizer/generator/logic/dungeon.cpp

@@ -153,7 +153,7 @@ void daItem_c::CreateInit() {
     show();
 
 #if TARGET_PC
-    if (dComIfG_isRandomizer()) {
+    if (randomizer_IsActive()) {
         // Adjust item scale based on item ID
         switch(m_itemNo)
         {
@@ -230,7 +230,7 @@ void daItem_c::CreateInit() {
     animPlay(1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f);
 
 #if TARGET_PC
-    if (m_itemNo == dItemNo_BOOMERANG_e && !dComIfG_isRandomizer()) {
+    if (m_itemNo == dItemNo_BOOMERANG_e && !randomizer_IsActive()) {
 #else
     if (m_itemNo == dItemNo_BOOMERANG_e) {
 #endif

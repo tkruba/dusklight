@@ -29,11 +29,10 @@
 
 #if TARGET_PC
 #include "dusk/randomizer/generator/randomizer.hpp"
-#include "dusk/randomizer/generator/utility/yaml.hpp"
 #include "dusk/randomizer/game/tools.h"
 #include "dusk/randomizer/game/stages.h"
 #include "dusk/randomizer/game/flags.h"
-#include "dusk/randomizer//game/verify_item_functions.h"
+#include "dusk/randomizer/game/randomizer_context.hpp"
 #endif
 
 
@@ -173,7 +172,7 @@ int dComIfG_play_c::getLayerNo_common_common(const char* i_stageName, int i_room
 
 #if TARGET_PC
         // Special layer checks for randomizer
-        if (dComIfG_isRandomizer()) {
+        if (randomizer_IsActive()) {
             int stageID = getStageID(i_stageName);
             bool condition = false;
             bool darkIsClear = false;
@@ -2866,65 +2865,26 @@ int dComIfGd_setShadow(u32 param_0, s8 param_1, J3DModel* param_2, cXyz* param_3
 
 #if TARGET_PC
 void dComIfGs_setupRandomizerSave() {
-    randomizer::Randomizer randomizer;
-    if (randomizer.Generate())
-        throw std::runtime_error("Randomizer Generation Faild");
-    auto world = randomizer.GetWorlds()[0].get();
 
-    // Setup randomizer data
-    auto& randoData = g_dComIfG_gameInfo.info.mRandomizer;
-    randoData.mActive = TRUE;
-    for (const auto& location : world->GetAllLocations()) {
-        const auto& metaData = location->GetMetadata();
-        if (location->HasCategories("Chest")) {
-            const auto& stage = metaData[0]["Stage"].as<std::string>();
-            const auto& tboxId = metaData[0]["Tbox ID"].as<u8>();
-            const auto& itemId = location->GetCurrentItem()->GetID();
-            randoData.mTreasureChestOverrides[stage][tboxId] = itemId;
-        }
-    }
+    // Setup file based on randomizer data
+    auto& randoData = randomizer_GetContext();
+    randoData.mActive = true;
+    randoData.mCreatingSave = true;
 
     // Set starting flags
-    auto startFlags = LoadYAML(RANDO_DATA_PATH "startflags.yaml");
     // Event Flags
-    for (const auto& flagNode : startFlags["EventFlags"]) {
-        if (flagNode.IsScalar()) {
-            const auto& flag = flagNode.as<u16>();
-            dComIfGs_onEventBit(flag);
-        } else if (flagNode.IsMap()) {
-            const auto& condition = flagNode.begin()->first.as<std::string>();
-            if (world->EvaluateSettingCondition(condition)) {
-                DuskLog.debug("Setting flags for {}", condition);
-                for (const auto& conditionalFlag : flagNode.begin()->second) {
-                    const auto& flag = conditionalFlag.as<u16>();
-                    dComIfGs_onEventBit(flag);
-                }
-            }
+    for (const auto& flag : randoData.mStartEventFlags) {
+        dComIfGs_onEventBit(flag);
+    }
+    // Region Flags
+    for (const auto& [region, flags] : randoData.mStartRegionFlags) {
+        for (const auto& flag : flags) {
+            dComIfGs_onRegionFlag(region, flag);
         }
     }
 
-    // Region Flags
-    for (const auto& regionNode : startFlags["RegionFlags"]) {
-        const auto& region = regionNode.first.as<std::string>();
-        const auto& index = regionNode.second["Index"].as<int>();
-        const auto& flags = regionNode.second["Flags"];
-        DuskLog.debug("Setting region flags for {}", region);
-        // This seems kinda scuffed so maybe we change it later
-        for (const auto& flagNode : flags) {
-            if (flagNode.IsScalar()) {
-                const auto& flag = flagNode.as<int>();
-                dComIfGs_onRegionFlag(index, flag);
-            } else if (flagNode.IsMap()) {
-                const auto& condition = flagNode.begin()->first.as<std::string>();
-                if (world->EvaluateSettingCondition(condition)) {
-                    for (const auto& conditionalFlag : flagNode.begin()->second) {
-                        const auto& flag = conditionalFlag.as<int>();
-                        dComIfGs_onRegionFlag(index, flag);
-                    }
-                }
-            }
-        }
-    }
+    // Map bits (fills in overworld on map)
+    dComIfGs_setRegionBit(randoData.mMapBits);
 
     // Other flags based on starting flags
     if (dComIfGs_isEventBit(CLEARED_FARON_TWILIGHT))
@@ -2963,35 +2923,14 @@ void dComIfGs_setupRandomizerSave() {
             dComIfGs_onTransformLV(3);
         }
     }
-
-    if (world->Setting("Unlock Map Regions") == "On")
-    {
-        int mapBits = 0x20;
-        if (world->Setting("Snowpeak Does Not Require Reekfish Scent") == "On") {mapBits |= 0x40;}
-        if (dComIfGs_isEventBit(CLEARED_LANAYRU_TWILIGHT)) {mapBits |= 0x10;}
-        if (dComIfGs_isEventBit(CLEARED_ELDIN_TWILIGHT)) {mapBits |= 0x08;}
-        if (dComIfGs_isEventBit(CLEARED_FARON_TWILIGHT)) {mapBits |= 0x04;}
-        if (world->Setting("Skip Prologue") == "On") {mapBits |= 0x02;}
-        dComIfGs_setRegionBit(mapBits);
-    }
     
     // Set starting inventory
-    for (const auto& item: world->GetStartingItemPool()) {
-        execItemGet(static_cast<u8>(item->GetID()));
+    for (const auto& itemId: randoData.mStartingInventory) {
+        execItemGet(itemId);
     }
 
-    // Set starting time of day
-    const auto startTimeSetting = world->Setting("Starting Time of Day");
-    if (startTimeSetting == "Morning")
-        randoData.mStartHour = 6;
-    else if (startTimeSetting == "Noon")
-        randoData.mStartHour = 12;
-    else if (startTimeSetting == "Evening")
-        randoData.mStartHour = 18;
-    else if (startTimeSetting == "Night")
-        randoData.mStartHour = 24;
-
     DuskLog.debug("Created Rando Save");
+    randoData.mCreatingSave = false;
 }
 #endif
 

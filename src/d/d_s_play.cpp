@@ -41,6 +41,7 @@
 
 #if TARGET_PC
 #include "dusk/memory.h"
+#include "dusk/randomizer/game/tools.h"
 #endif
 
 #if DEBUG

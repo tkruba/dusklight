@@ -1270,7 +1270,7 @@ void daNpc_Fairy_c::AppearDemoCall() {
                 mEvtNo = EVT_APPEAR_50F_02;
             }
 #if TARGET_PC
-        } else if (dComIfGs_checkEmptyBottle() || dComIfG_isRandomizer()) {
+        } else if (dComIfGs_checkEmptyBottle() || randomizer_IsActive()) {
 #else
         } else if (dComIfGs_checkEmptyBottle()) {
 #endif

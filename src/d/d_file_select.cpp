@@ -1536,8 +1536,8 @@ void dFile_select_c::nameInput2() {
         dComIfGs_setHorseName(mpName->getInputStrPtr());
         mIsSelectEnd = true;
 #if TARGET_PC
-        // Create a randomizer save if Z is being held
-        if (mDoCPd_c::getHoldZ(PAD_1)) {
+        // Create a randomizer save if one is selected
+        if (!randomizer_GetContext().mHash.empty()) {
             dComIfGs_setupRandomizerSave();
         }
 #endif

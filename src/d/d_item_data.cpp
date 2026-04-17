@@ -1147,12 +1147,12 @@ dItem_itemInfo dItem_data::item_info_randomizer[] = {
 };
 
 dItem_itemResource* dItem_data_getItemResource() {
-    return dComIfG_isRandomizer() ? dItem_data::item_resource_randomizer : dItem_data::item_resource;
+    return randomizer_IsActive() ? dItem_data::item_resource_randomizer : dItem_data::item_resource;
 }
 dItem_fieldItemResource* dItem_data_getFieldItemResource() {
-    return dComIfG_isRandomizer() ? dItem_data::field_item_res_randomizer : dItem_data::field_item_res;
+    return randomizer_IsActive() ? dItem_data::field_item_res_randomizer : dItem_data::field_item_res;
 }
 dItem_itemInfo* dItem_data_getItemInfo() {
-    return dComIfG_isRandomizer() ? dItem_data::item_info_randomizer : dItem_data::item_info;
+    return randomizer_IsActive() ? dItem_data::item_info_randomizer : dItem_data::item_info;
 }
 #endif

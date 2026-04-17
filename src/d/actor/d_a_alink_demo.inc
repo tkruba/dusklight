@@ -1023,12 +1023,12 @@ void daAlink_c::setGetItemFace(u16 i_itemNo) {
         || i_itemNo == dItemNo_DROP_CONTAINER02_e
 #if TARGET_PC
         // Rando items for facial expressions
-        || (dComIfG_isRandomizer() && i_itemNo == dItemNo_Randomizer_WOOD_STICK_e)
-        || (dComIfG_isRandomizer() && i_itemNo == dItemNo_Randomizer_SWORD_e)
-        || (dComIfG_isRandomizer() && i_itemNo == dItemNo_Randomizer_SHIELD_e)
-        || (dComIfG_isRandomizer() && i_itemNo == dItemNo_Randomizer_MASTER_SWORD_e)
-        || (dComIfG_isRandomizer() && i_itemNo == dItemNo_Randomizer_LIGHT_SWORD_e)
-        || (dComIfG_isRandomizer() && i_itemNo == dItemNo_Randomizer_MAGIC_LV1_e)
+        || (randomizer_IsActive() && i_itemNo == dItemNo_Randomizer_WOOD_STICK_e)
+        || (randomizer_IsActive() && i_itemNo == dItemNo_Randomizer_SWORD_e)
+        || (randomizer_IsActive() && i_itemNo == dItemNo_Randomizer_SHIELD_e)
+        || (randomizer_IsActive() && i_itemNo == dItemNo_Randomizer_MASTER_SWORD_e)
+        || (randomizer_IsActive() && i_itemNo == dItemNo_Randomizer_LIGHT_SWORD_e)
+        || (randomizer_IsActive() && i_itemNo == dItemNo_Randomizer_MAGIC_LV1_e)
 #endif
         || i_itemNo == dItemNo_DROP_CONTAINER03_e)
     {
@@ -1037,7 +1037,7 @@ void daAlink_c::setGetItemFace(u16 i_itemNo) {
         setFaceBasicTexture(FTANM_K_A);
         setFaceBasicBck(dRes_ID_ALANM_BCK_FK_e);
 #if TARGET_PC
-    } else if (i_itemNo == dItemNo_TOMATO_PUREE_e || i_itemNo == dItemNo_TASTE_e || (dComIfG_isRandomizer() && i_itemNo == dItemNo_Randomizer_FOOLISH_ITEM_e)) {
+    } else if (i_itemNo == dItemNo_TOMATO_PUREE_e || i_itemNo == dItemNo_TASTE_e || (randomizer_IsActive() && i_itemNo == dItemNo_Randomizer_FOOLISH_ITEM_e)) {
 #else
     } else if (i_itemNo == dItemNo_TOMATO_PUREE_e || i_itemNo == dItemNo_TASTE_e) {
 #endif
@@ -2494,7 +2494,7 @@ void daAlink_c::setGetSubBgm(int i_itemNo) {
     };
 
 #if TARGET_PC
-    u32 se_type = dComIfG_isRandomizer() ? getSeTypeRandomizer[i_itemNo] : getSeType[i_itemNo];
+    u32 se_type = randomizer_IsActive() ? getSeTypeRandomizer[i_itemNo] : getSeType[i_itemNo];
 #else
     u32 se_type = getSeType[i_itemNo];
 #endif

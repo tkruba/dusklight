@@ -62,7 +62,7 @@ int CheckFieldItemCreateHeap(fopAc_ac_c* i_this) {
 
     u8 item_no = a_this->getItemNo();
 #if TARGET_PC
-    if (dComIfG_isRandomizer()) {
+    if (randomizer_IsActive()) {
         switch (item_no)
         {
         case dItemNo_Randomizer_EMPTY_BOTTLE_e:

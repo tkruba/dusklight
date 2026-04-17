@@ -1787,11 +1787,11 @@ cPhs_Step daTbox_c::create1st() {
         field_0x980 = home.angle.x;
 #if TARGET_PC
         // The upper 8 bits of home.angle.z hold the itemId
-        if (dComIfG_isRandomizer()) {
+        if (randomizer_IsActive()) {
             home.angle.z &= ~0xFF00;
             auto stage = dComIfGp_getStartStageName();
             auto tboxId = static_cast<u8>(getTboxNo());
-            home.angle.z |= dComIfG_getRandomizer().mTreasureChestOverrides[stage][tboxId] << 8;
+            home.angle.z |= randomizer_GetContext().mTreasureChestOverrides[stage][tboxId] << 8;
         }
 #endif
         field_0x982 = home.angle.z;

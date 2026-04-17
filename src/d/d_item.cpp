@@ -537,7 +537,7 @@ static void (*item_func_ptr_randomizer[256])() = {
 inline void getItemFunc(u8 i_itemNo) {
     dComIfGs_onItemFirstBit(i_itemNo);
 #if TARGET_PC
-    (dComIfG_isRandomizer() ? item_func_ptr_randomizer : item_func_ptr)[i_itemNo]();
+    (randomizer_IsActive() ? item_func_ptr_randomizer : item_func_ptr)[i_itemNo]();
 #else
     item_func_ptr[i_itemNo]();
 #endif
@@ -545,7 +545,7 @@ inline void getItemFunc(u8 i_itemNo) {
 
 void execItemGet(u8 i_itemNo) {
 #if TARGET_PC
-    if (dComIfG_isRandomizer())
+    if (randomizer_IsActive())
         i_itemNo = verifyProgressiveItem(i_itemNo);
 #endif
     getItemFunc(i_itemNo);
@@ -1074,7 +1074,7 @@ static int (*item_getcheck_func_ptr_randomizer[256])() = {
 
 inline int getCheckItemFunc(u8 i_itemNo) {
 #if TARGET_PC
-    return (dComIfG_isRandomizer() ? item_getcheck_func_ptr_randomizer : item_getcheck_func_ptr)[i_itemNo]();
+    return (randomizer_IsActive() ? item_getcheck_func_ptr_randomizer : item_getcheck_func_ptr)[i_itemNo]();
 #else
     return item_getcheck_func_ptr[i_itemNo]();
 #endif
@@ -1233,7 +1233,7 @@ void item_func_SMALL_KEY() {
 void item_func_KAKERA_HEART() {
     dComIfGp_setItemMaxLifeCount(1);
 #if TARGET_PC
-    if (dComIfG_isRandomizer()) {
+    if (randomizer_IsActive()) {
         // TODO rando
         /*
         Pasting rando code until the framework has been updated
@@ -1259,7 +1259,7 @@ void item_func_UTUWA_HEART() {
     int tmp = dStage_stagInfo_GetSaveTbl(stag_info);
     dComIfGs_onStageLife();
 #if TARGET_PC
-    if (dComIfG_isRandomizer()) {
+    if (randomizer_IsActive()) {
         // TODO rando
         /*
         Pasting rando code until the framework has been updated
@@ -1334,7 +1334,7 @@ void item_func_WEAR_ZORA() {}
 
 void item_func_MAGIC_LV1() {
 #if TARGET_PC
-    if (dComIfG_isRandomizer()) {
+    if (randomizer_IsActive()) {
         dComIfGs_onEventBit(0xD04); // Can transform at will
         dComIfGs_onEventBit(0x501); // Midna Charge Unlocked
         return;
@@ -1355,7 +1355,7 @@ void item_func_WALLET_LV1() {
 void item_func_WALLET_LV2() {
     dComIfGs_setWalletSize(BIG_WALLET);
 #if TARGET_PC
-    if (dComIfG_isRandomizer()) {
+    if (randomizer_IsActive()) {
         // TODO rando
         // Putting rando code here until the framework gets built:
         /*
@@ -1386,7 +1386,7 @@ void item_func_WALLET_LV3() {
     dComIfGs_setWalletSize(GIANT_WALLET);
 #if TARGET_PC
     // TODO rando
-    if (dComIfG_isRandomizer()) {
+    if (randomizer_IsActive()) {
         // Putting rando code here until the framework gets built:
         /*
         Basically we fill the wallet if desired and then we change the color of the rupee icon to red
@@ -1451,7 +1451,7 @@ void item_func_WOOD_STICK() {
     dComIfGs_setCollectSword(COLLECT_WOODEN_SWORD);
     dComIfGs_setSelectEquipSword(dItemNo_WOOD_STICK_e);
 #if TARGET_PC
-    if (!dComIfG_isRandomizer())
+    if (!randomizer_IsActive())
 #endif
     dComIfGs_onSwitch(28, dComIfGp_roomControl_getStayNo());
 }
@@ -1514,7 +1514,7 @@ void item_func_PACHINKO() {
 
 void item_func_COPY_ROD_2() {
 #if TARGET_PC
-    if (dComIfG_isRandomizer())
+    if (randomizer_IsActive())
         dComIfGs_onEventBit(0x2580); // Power up dominion rod
     else
 #endif
@@ -1729,7 +1729,7 @@ void item_func_LV3_SOUP() {
 
 void item_func_LETTER() {
 #if TARGET_PC
-    if (dComIfG_isRandomizer()) {
+    if (randomizer_IsActive()) {
         if (dComIfGs_getItem(SLOT_21, true) != dItemNo_Randomizer_HORSE_FLUTE_e)
             dComIfGs_setItem(SLOT_21, dItemNo_Randomizer_LETTER_e);
     } else
@@ -1739,7 +1739,7 @@ void item_func_LETTER() {
 
 void item_func_BILL() {
 #if TARGET_PC
-    if (dComIfG_isRandomizer()) {
+    if (randomizer_IsActive()) {
         if (dComIfGs_getItem(SLOT_21, true) != dItemNo_Randomizer_HORSE_FLUTE_e)
             dComIfGs_setItem(SLOT_21, dItemNo_Randomizer_BILL_e);
     } else
@@ -1751,7 +1751,7 @@ void item_func_WOOD_STATUE() {
     /* dSv_event_flag_c::F_283 - Hyrule Field - Get wood carving */
     dComIfGs_onEventBit(dSv_event_flag_c::saveBitLabels[283]);
 #if TARGET_PC
-    if (dComIfG_isRandomizer()) {
+    if (randomizer_IsActive()) {
         if (dComIfGs_getItem(SLOT_21, true) != dItemNo_Randomizer_HORSE_FLUTE_e)
             dComIfGs_setItem(SLOT_21, dItemNo_Randomizer_WOOD_STATUE_e);
     } else
@@ -1761,7 +1761,7 @@ void item_func_WOOD_STATUE() {
 
 void item_func_IRIAS_PENDANT() {
 #if TARGET_PC
-    if (dComIfG_isRandomizer()) {
+    if (randomizer_IsActive()) {
         if (dComIfGs_getItem(SLOT_21, true) != dItemNo_Randomizer_HORSE_FLUTE_e)
             dComIfGs_setItem(SLOT_21, dItemNo_Randomizer_IRIAS_PENDANT_e);
     } else
@@ -1771,7 +1771,7 @@ void item_func_IRIAS_PENDANT() {
 
 void item_func_HORSE_FLUTE() {
 #if TARGET_PC
-    if (dComIfG_isRandomizer()) {
+    if (randomizer_IsActive()) {
         if (dComIfGs_getItem(SLOT_21, true) != dItemNo_Randomizer_NONE_e)
             dComIfGs_setItem(SLOT_21, dItemNo_Randomizer_HORSE_FLUTE_e);
     } else
@@ -1837,7 +1837,7 @@ void item_func_LAKE_HYLIA_PORTAL() {
 
 void item_func_RAFRELS_MEMO() {
 #if TARGET_PC
-    if (dComIfG_isRandomizer())
+    if (randomizer_IsActive())
         dComIfGs_setItem(SLOT_7, dItemNo_Randomizer_RAFRELS_MEMO_e);
     else
 #endif
@@ -1846,7 +1846,7 @@ void item_func_RAFRELS_MEMO() {
 
 void item_func_ASHS_SCRIBBLING() {
 #if TARGET_PC
-    if (dComIfG_isRandomizer()) {
+    if (randomizer_IsActive()) {
         if (!dComIfGs_isEventBit(0x3B80)) { // Got earring from Ralis
             dComIfGs_setItem(SLOT_19, dItemNo_Randomizer_ASHS_SCRIBBLING_e);
         }
@@ -1928,7 +1928,7 @@ void item_func_DROP_CONTAINER02() {
 void item_func_DROP_CONTAINER03() {
     dComIfGs_onLightDropGetFlag(LANAYRU_VESSEL);
 #if TARGET_PC
-    if (dComIfG_isRandomizer()) {
+    if (randomizer_IsActive()) {
         dComIfGs_onEventBit(0x1E80); // Malo Mart Fundraising Starts
     }
 #endif
@@ -1938,7 +1938,7 @@ void item_func_FILLED_CONTAINER() {}
 
 void item_func_MIRROR_PIECE_2() {
 #if TARGET_PC
-    if (dComIfG_isRandomizer()) {
+    if (randomizer_IsActive()) {
         dComIfGs_onCollectMirror(1);
         // TODO rando
         /*
@@ -1955,7 +1955,7 @@ void item_func_MIRROR_PIECE_2() {
 
 void item_func_MIRROR_PIECE_3() {
 #if TARGET_PC
-    if (dComIfG_isRandomizer()) {
+    if (randomizer_IsActive()) {
         dComIfGs_onCollectMirror(2);
         // TODO rando
         /*
@@ -1972,7 +1972,7 @@ void item_func_MIRROR_PIECE_3() {
 
 void item_func_MIRROR_PIECE_4() {
 #if TARGET_PC
-    if (dComIfG_isRandomizer()) {
+    if (randomizer_IsActive()) {
         dComIfGs_onCollectMirror(3);
         // TODO rando
         /*
@@ -2144,7 +2144,7 @@ void item_func_FUSED_SHADOW_1() {
 }
 
 void item_func_FUSED_SHADOW_2() {
-    if (dComIfG_isRandomizer()) {
+    if (randomizer_IsActive()) {
         dComIfGs_onCollectCrystal(1);
         /*
         Adding rando code until framework is implemented
@@ -2158,7 +2158,7 @@ void item_func_FUSED_SHADOW_2() {
 }
 
 void item_func_FUSED_SHADOW_3() {
-    if (dComIfG_isRandomizer()) {
+    if (randomizer_IsActive()) {
         dComIfGs_onCollectCrystal(2);
         /*
         Adding rando code until framework is implemented
@@ -2179,7 +2179,7 @@ void item_func_FUSED_SHADOW_3() {
 
 void item_func_MIRROR_PIECE_1() {
 
-    if (dComIfG_isRandomizer()) {
+    if (randomizer_IsActive()) {
         dComIfGs_onCollectMirror(0);
         // TODO rando
         /*
@@ -2197,7 +2197,7 @@ void item_func_MIRROR_PIECE_1() {
 
 void item_func_POU_SPIRIT() {
 #if TARGET_PC
-    if (dComIfG_isRandomizer()) {
+    if (randomizer_IsActive()) {
         dComIfGs_addPohSpiritNum();
         // TODO rando
         /*
@@ -2252,7 +2252,7 @@ void item_func_ANCIENT_DOCUMENT() {
 
 void item_func_AIR_LETTER() {
 #if TARGET_PC
-    if (dComIfG_isRandomizer()) {
+    if (randomizer_IsActive()) {
         u8 letterCount = dComIfGs_getAncientDocumentNum();
         dComIfGs_setAncientDocumentNum(letterCount + 1);
     } else
@@ -2262,7 +2262,7 @@ void item_func_AIR_LETTER() {
 
 void item_func_ANCIENT_DOCUMENT2() {
 #if TARGET_PC
-    if (dComIfG_isRandomizer()) {
+    if (randomizer_IsActive()) {
         dComIfGs_onEventBit(0x3B08); // Repaired Cannon at Lake
         dComIfGs_setAncientDocumentNum(6);
     }
@@ -2280,7 +2280,7 @@ void item_func_LINKS_SAVINGS() {
 
 void item_func_SMALL_KEY2() {
 #if TARGET_PC
-    if (dComIfG_isRandomizer())
+    if (randomizer_IsActive())
         dComIfGs_onStageSwitch(0x2, 0x14); // Unlock North Faron Gate
     else
 #endif
@@ -2297,7 +2297,7 @@ void item_func_POU_FIRE4() {}
 
 void item_func_BOSSRIDER_KEY() {
 #if TARGET_PC
-    if (dComIfG_isRandomizer()) {
+    if (randomizer_IsActive()) {
         dComIfGs_onStageSwitch(0x3, 0x69); // Started Escort
         dComIfGs_onStageSwitch(0x3, 0x65); // Followed Rutella to Graveyard
         dComIfGs_onEventBit(0x840); // Started Zora Escort
@@ -2308,7 +2308,7 @@ void item_func_BOSSRIDER_KEY() {
 
 void item_func_TOMATO_PUREE() {
 #if TARGET_PC
-    if (dComIfG_isRandomizer()) {
+    if (randomizer_IsActive()) {
         dComIfGs_onEventBit(0x480); // Told Yeta about Pumpkin
         dComIfGs_onEventBit(0x2); // Yeto put Pumpkin in Soup
         dComIfGs_onEventBit(0x1440); // SPR Lobby Door Unlocked
@@ -2319,7 +2319,7 @@ void item_func_TOMATO_PUREE() {
 
 void item_func_TASTE() {
 #if TARGET_PC
-    if (dComIfG_isRandomizer()) {
+    if (randomizer_IsActive()) {
         dComIfGs_onEventBit(0x120); // Told Yeta about Cheese
         dComIfGs_onEventBit(0x1); // Yeto put Pumpkin in Soup
         dComIfGs_onEventBit(0x1420); // SPR Lobby west Door Unlocked
@@ -2330,7 +2330,7 @@ void item_func_TASTE() {
 
 void item_func_LV5_BOSS_KEY() {
 #if TARGET_PC
-    if (dComIfG_isRandomizer())
+    if (randomizer_IsActive())
         dComIfGs_onDungeonItemBossKey(0x14);
     else
 #endif
@@ -2351,7 +2351,7 @@ void item_func_KEY_OF_CARAVAN() {}
 
 void item_func_LV2_BOSS_KEY() {
 #if TARGET_PC
-    if (dComIfG_isRandomizer()) {
+    if (randomizer_IsActive()) {
         dComIfGs_onDungeonItemBossKey(0x11);
         execItemGet(dItemNo_Randomizer_L2_KEY_PIECES3_e);
     } else
@@ -2361,7 +2361,7 @@ void item_func_LV2_BOSS_KEY() {
 
 void item_func_KEY_OF_FILONE() {
 #if TARGET_PC
-    if (dComIfG_isRandomizer())
+    if (randomizer_IsActive())
         dComIfGs_onStageSwitch(0x2, 0xC); // Unlock Coro Gate
     else
 #endif
@@ -2564,7 +2564,7 @@ int item_getcheck_func_WEAR_ZORA() {
 
 int item_getcheck_func_MAGIC_LV1() {
 #if TARGET_PC
-    if (dComIfG_isRandomizer())
+    if (randomizer_IsActive())
         return dComIfGs_isItemFirstBit(dItemNo_Randomizer_MAGIC_LV1_e);
 #endif
     return -1;
@@ -2580,7 +2580,7 @@ int item_getcheck_func_WALLET_LV1() {
 
 int item_getcheck_func_WALLET_LV2() {
 #if TARGET_PC
-    if (dComIfG_isRandomizer())
+    if (randomizer_IsActive())
         return dComIfGs_isItemFirstBit(dItemNo_Randomizer_WALLET_LV2_e);
 #endif
     return -1;
@@ -2588,7 +2588,7 @@ int item_getcheck_func_WALLET_LV2() {
 
 int item_getcheck_func_WALLET_LV3() {
 #if TARGET_PC
-    if (dComIfG_isRandomizer())
+    if (randomizer_IsActive())
         return dComIfGs_isItemFirstBit(dItemNo_Randomizer_WALLET_LV3_e);
 #endif
     return -1;
@@ -2855,7 +2855,7 @@ int item_getcheck_func_LV3_SOUP() {
 
 int item_getcheck_func_LETTER() {
 #if TARGET_PC
-    if (dComIfG_isRandomizer())
+    if (randomizer_IsActive())
         return dComIfGs_isItemFirstBit(dItemNo_Randomizer_LETTER_e);
 #endif
     return dComIfGs_getItem(SLOT_21, true) == dItemNo_LETTER_e ? TRUE : FALSE;
@@ -2863,7 +2863,7 @@ int item_getcheck_func_LETTER() {
 
 int item_getcheck_func_BILL() {
 #if TARGET_PC
-    if (dComIfG_isRandomizer())
+    if (randomizer_IsActive())
         return dComIfGs_isItemFirstBit(dItemNo_Randomizer_BILL_e);
 #endif
     return dComIfGs_getItem(SLOT_21, true) == dItemNo_BILL_e ? TRUE : FALSE;
@@ -2871,7 +2871,7 @@ int item_getcheck_func_BILL() {
 
 int item_getcheck_func_WOOD_STATUE() {
 #if TARGET_PC
-    if (dComIfG_isRandomizer())
+    if (randomizer_IsActive())
         return dComIfGs_isItemFirstBit(dItemNo_Randomizer_WOOD_STATUE_e);
 #endif
     return dComIfGs_getItem(SLOT_21, true) == dItemNo_WOOD_STATUE_e ? TRUE : FALSE;
@@ -2879,7 +2879,7 @@ int item_getcheck_func_WOOD_STATUE() {
 
 int item_getcheck_func_IRIAS_PENDANT() {
 #if TARGET_PC
-    if (dComIfG_isRandomizer())
+    if (randomizer_IsActive())
         return dComIfGs_isItemFirstBit(dItemNo_Randomizer_IRIAS_PENDANT_e);
 #endif
     return dComIfGs_getItem(SLOT_21, true) == dItemNo_IRIAS_PENDANT_e ? TRUE : FALSE;
@@ -2887,7 +2887,7 @@ int item_getcheck_func_IRIAS_PENDANT() {
 
 int item_getcheck_func_HORSE_FLUTE() {
 #if TARGET_PC
-    if (dComIfG_isRandomizer())
+    if (randomizer_IsActive())
         return dComIfGs_isItemFirstBit(dItemNo_Randomizer_HORSE_FLUTE_e);
 #endif
     return dComIfGs_getItem(SLOT_22, true) == dItemNo_HORSE_FLUTE_e ? TRUE : FALSE;
@@ -2945,7 +2945,7 @@ int item_getcheck_func_FILLED_CONTAINER() {
 
 int item_getcheck_func_MIRROR_PIECE_2() {
 #if TARGET_PC
-    if (dComIfG_isRandomizer())
+    if (randomizer_IsActive())
         return dComIfGs_isItemFirstBit(dItemNo_Randomizer_MIRROR_PIECE_2_e);
 #endif
     return -1;
@@ -2953,7 +2953,7 @@ int item_getcheck_func_MIRROR_PIECE_2() {
 
 int item_getcheck_func_MIRROR_PIECE_3() {
 #if TARGET_PC
-    if (dComIfG_isRandomizer())
+    if (randomizer_IsActive())
         return dComIfGs_isItemFirstBit(dItemNo_Randomizer_MIRROR_PIECE_3_e);
 #endif
     return -1;
@@ -2961,7 +2961,7 @@ int item_getcheck_func_MIRROR_PIECE_3() {
 
 int item_getcheck_func_MIRROR_PIECE_4() {
 #if TARGET_PC
-    if (dComIfG_isRandomizer())
+    if (randomizer_IsActive())
         return dComIfGs_isItemFirstBit(dItemNo_Randomizer_MIRROR_PIECE_4_e);
 #endif
     return -1;
@@ -3181,7 +3181,7 @@ int item_getcheck_func_POU_FIRE4() {
 
 int item_getcheck_func_BOSSRIDER_KEY() {
 #if TARGET_PC
-    if (dComIfG_isRandomizer())
+    if (randomizer_IsActive())
         return dComIfGs_isItemFirstBit(dItemNo_Randomizer_BOSSRIDER_KEY_e);
 #endif
     return -1;

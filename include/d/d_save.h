@@ -964,18 +964,6 @@ public:
     /* 0x8 */ s8 m_no;
 };
 
-#if TARGET_PC
-class dSv_randomizer_c {
-public:
-    BOOL mActive{false};
-    std::unordered_map<std::string, std::unordered_map<u8, u8>> mTreasureChestOverrides{};
-    std::unordered_map<std::string, std::unordered_map<u8, u8>> mPoeOverrides{};
-
-    u8 mStartHour{0};
-
-    void clear();
-};
-#endif
 
 class dSv_info_c {
 public:
@@ -1058,9 +1046,6 @@ public:
     /* 0xF30 */ s64 mSaveTotalTime;
 #if DEBUG
     /* 0xF80 */ flagFile_c mFlagFile;
-#endif
-#if TARGET_PC
-    /* 0xF38 */ dSv_randomizer_c mRandomizer;
 #endif
 };  // Size: 0xF38
 

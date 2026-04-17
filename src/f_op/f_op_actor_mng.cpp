@@ -1395,7 +1395,7 @@ fpc_ProcID fopAcM_createItemForPresentDemo(cXyz const* i_pos, int i_itemNo, u8 p
                                            int i_itemBitNo, int i_roomNo, csXyz const* i_angle,
                                            cXyz const* i_scale) {
 #if TARGET_PC
-    if (dComIfG_isRandomizer()) {
+    if (randomizer_IsActive()) {
         i_itemNo = verifyProgressiveItem(i_itemNo);
     }
 #endif
@@ -1624,7 +1624,7 @@ fpc_ProcID fopAcM_createItemForBoss(const cXyz* i_pos, int i_itemNo, int i_roomN
         return fpcM_ERROR_PROCESS_ID_e;
     }
 
-    if (dComIfG_isRandomizer()) {
+    if (randomizer_IsActive()) {
         i_itemNo = verifyProgressiveItem(i_itemNo);
         if (i_itemNo == dItemNo_Randomizer_UTAWA_HEART_e)
         {
@@ -1665,7 +1665,7 @@ fpc_ProcID fopAcM_createItemForMidBoss(const cXyz* i_pos, int i_itemNo, int i_ro
     }
 
     // If we are fighting Ook in randomizer, we want to handle the boomerang check a different way.
-    if (dComIfG_isRandomizer()) {
+    if (randomizer_IsActive()) {
         if (daAlink_c::checkStageName("D_MN05B")) {
             i_itemNo = verifyProgressiveItem(i_itemNo);
             return initCreatePlayerItem(i_itemNo, 0xFF, i_pos, i_roomNo, i_angle, i_scale);
