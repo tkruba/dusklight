@@ -235,6 +235,8 @@ FetchContent_Declare(funchook
 )
 set(FUNCHOOK_BUILD_TESTS OFF CACHE BOOL "" FORCE)
 set(FUNCHOOK_BUILD_SHARED OFF CACHE BOOL "" FORCE)
+# funchook bundles capstone which uses cmake_minimum_required < 3.5
+set(CMAKE_POLICY_VERSION_MINIMUM 3.5)
 FetchContent_MakeAvailable(cxxopts json miniz funchook)
 
 if (DUSK_ENABLE_SENTRY_NATIVE)
