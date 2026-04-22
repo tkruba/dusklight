@@ -2883,7 +2883,6 @@ void dComIfGs_setupRandomizerSave() {
 
     // Setup file based on randomizer data
     auto& randoData = randomizer_GetContext();
-    randoData.mActive = true;
     randoData.mCreatingSave = true;
 
     // Set starting flags
