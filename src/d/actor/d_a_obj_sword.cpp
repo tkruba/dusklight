@@ -36,7 +36,7 @@ int daObjSword_c::Create() {
 
 cPhs_Step daObjSword_c::create() {
     fopAcM_ct(this, daObjSword_c);
-    m_itemNo = 0x28;
+    m_itemNo = IF_DUSK(randomizer_IsActive() ? static_cast<u8>(randomizer_getItemAtLocation("Ordon Sword")): ) 0x28;
     if (fopAcM_isItem(this, getItemBit())) {
         return cPhs_ERROR_e;
     }
