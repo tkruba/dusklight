@@ -274,6 +274,14 @@ void ModLoader::tryLoadDusk(const std::filesystem::path& modPath) {
     mod.mod_path = fs::absolute(modPath).string();
     mod.dir = fs::absolute(cacheDir).string();
     mod.handle = handle;
+    auto* mod_api_ver = reinterpret_cast<uint32_t*>(pl_dlsym(handle, "mod_api_version"));
+    if (mod_api_ver && *mod_api_ver != DUSK_MOD_API_VERSION) {
+        DuskLog.error("ModLoader: {} expects API v{} but engine is v{}, skipping",
+                      fs::path(dllEntry).filename().string(), *mod_api_ver, DUSK_MOD_API_VERSION);
+        pl_dlclose(handle);
+        return;
+    }
+
     mod.fn_init = reinterpret_cast<LoadedMod::FnInit>(pl_dlsym(handle, "mod_init"));
     mod.fn_tick = reinterpret_cast<LoadedMod::FnTick>(pl_dlsym(handle, "mod_tick"));
     mod.fn_cleanup = reinterpret_cast<LoadedMod::FnCleanup>(pl_dlsym(handle, "mod_cleanup"));

@@ -17,6 +17,11 @@ extern "C" {
 #  define DUSK_MOD_EXPORT __attribute__((visibility("default")))
 #endif
 
+// Place this once at file scope in your mod to declare the minimum API version required.
+// The loader will refuse to initialize the mod if the engine's API version is older.
+#define DUSK_REQUIRE_API_VERSION \
+    DUSK_MOD_EXPORT uint32_t mod_api_version = DUSK_MOD_API_VERSION;
+
 typedef struct DuskModAPI {
     uint32_t    api_version;
     const char* mod_dir;

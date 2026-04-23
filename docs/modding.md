@@ -75,6 +75,8 @@ All fields are optional but recommended. `name` falls back to the filename, `ver
 ```cpp
 #include "dusk/mod_api.h"
 
+DUSK_REQUIRE_API_VERSION  // declares mod_api_version; loader rejects the mod if the engine is older
+
 extern "C" {
 
 void mod_init   (DuskModAPI* api);  // required, called once at startup
@@ -83,6 +85,8 @@ void mod_cleanup(DuskModAPI* api);  // optional, called on shutdown
 
 }
 ```
+
+`DUSK_REQUIRE_API_VERSION` is optional but recommended. When present, the loader will refuse to initialize the mod if its API version doesn't exactly match the engine's.
 
 ---
 
