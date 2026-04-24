@@ -562,7 +562,13 @@ void daItem_c::procWaitGetDemoEvent() {
             return;
         }
 
+#if TARGET_PC
+        // Probably a better way to handle this, but will do for now
+        // We always want to play the textbox in rando if possible (except for rupees/ammo)
+        if ((cLib_calcTimer<u8>(&field_0x9c1) == 0 && !randomizer_IsActive()) || checkItemGet(m_itemNo, 1)) {
+#else
         if (cLib_calcTimer<u8>(&field_0x9c1) == 0 || checkItemGet(m_itemNo, 1)) {
+#endif
             if (fopAcM_delete(m_item_id)) {
                 // "Item: Get Item deleted because Get Demo was canceled\n"
                 OS_REPORT("アイテム：ゲットデモ中止されたので、ゲットアイテム削除しました\n");

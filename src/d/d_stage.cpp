@@ -1595,9 +1595,6 @@ u8 dStage_roomControl_c::mNoArcBank;
 #endif
 
 static void dStage_actorCreate(stage_actor_data_class* i_actorData, fopAcM_prm_class* i_actorPrm) {
-    dStage_objectNameInf* actorInf = dStage_searchName(i_actorData->name);
-
-
 #if TARGET_PC
     // If randomizer is active, override the data for this actor if it's in the actorPatches
     if (randomizer_IsActive()) {
@@ -1608,10 +1605,13 @@ static void dStage_actorCreate(stage_actor_data_class* i_actorData, fopAcM_prm_c
             if (patches.contains(actorKey)) {
                 const auto& patchedActorData = patches.at(actorKey);
                 std::memcpy(i_actorPrm, patchedActorData.data() + 8, RandomizerContext::ACTOR_CRC_SIZE - 8);
+                std::memcpy(i_actorData, patchedActorData.data(), RandomizerContext::ACTOR_CRC_SIZE);
             }
         }
     }
 #endif
+
+    dStage_objectNameInf* actorInf = dStage_searchName(i_actorData->name);
 
     if (actorInf == NULL) {
         OS_REPORT("\x1B""[43;30mStage Actor Name Nothing !! <%s>\n\x1B[m", i_actorData->name);
