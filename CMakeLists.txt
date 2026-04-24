@@ -477,7 +477,7 @@ else ()
     set(DUSK_MAIN_TARGET dusk)
 endif ()
 
-target_compile_definitions(${DUSK_MAIN_TARGET} PRIVATE ${GAME_COMPILE_DEFS})
+target_compile_definitions(${DUSK_MAIN_TARGET} PRIVATE ${GAME_COMPILE_DEFS} DUSK_BUILDING_GAME=1)
 target_include_directories(${DUSK_MAIN_TARGET} PRIVATE ${GAME_INCLUDE_DIRS})
 target_link_libraries(${DUSK_MAIN_TARGET} PRIVATE aurora::main ${GAME_LIBS} ${JSYSTEM_LINK_LIBRARIES})
 target_precompile_headers(${DUSK_MAIN_TARGET} PRIVATE "$<$<COMPILE_LANGUAGE:CXX>:${CMAKE_SOURCE_DIR}/include/dusk_pch.hpp>")
