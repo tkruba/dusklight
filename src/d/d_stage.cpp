@@ -1598,7 +1598,7 @@ static void dStage_actorCreate(stage_actor_data_class* i_actorData, fopAcM_prm_c
 #if TARGET_PC
     // If randomizer is active, override the data for this actor if it's in the actorPatches
     if (randomizer_IsActive()) {
-        auto currentStageKey = getActorPatchesCurrentStageKey();
+        auto currentStageKey = getActorPatchesCurrentStageKey(i_actorPrm->room_no);
         if (randomizer_GetContext().mActorPatches.contains(currentStageKey)) {
             const auto& patches = randomizer_GetContext().mActorPatches.at(currentStageKey);
             auto actorKey = getActorCRC32(i_actorData);
