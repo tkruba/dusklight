@@ -1991,6 +1991,31 @@ static int dStage_actorCommonLayerInit(dStage_dt_c* i_stage, void* i_data, int e
         actor_data++;
     }
 
+#if TARGET_PC
+    // For randomizer, add in our custom actors
+    if (randomizer_IsActive()) {
+        u32 type = static_cast<dStage_nodeHeader*>(i_data)->m_tag;
+        u32 stageRoomLayer = getActorPatchesCurrentStageKey(i_stage->getRoomNo());
+        const auto& actorAdditions = randomizer_GetContext().mActorAdditions;
+        if (actorAdditions.contains(type) && actorAdditions.at(type).contains(stageRoomLayer)) {
+            auto& newActors = actorAdditions.at(type).at(stageRoomLayer);
+            for (const auto& actorData : newActors) {
+                stage_actor_data_class actor{};
+                std::memcpy(&actor, actorData.data(), actorData.size());
+                actor.base.setID = 0xFFFF;
+                // Code copied from base game for loop above
+                fopAcM_prm_class* appen = fopAcM_CreateAppend();
+
+                if (appen != NULL) {
+                    appen->base = actor.base;
+                    appen->room_no = (int)i_stage->getRoomNo();
+                    dStage_actorCreate(&actor, appen);
+                }
+            }
+        }
+    }
+#endif
+
     return 1;
 }
 
