@@ -383,7 +383,15 @@ namespace dusk {
 
             ImGui::SeparatorText("Camera");
 
-            config::ImGuiCheckbox("Invert Camera X Axis", getSettings().game.invertCameraXAxis);
+            config::ImGuiCheckbox("Free Camera", getSettings().game.freeCamera);
+
+            if (getSettings().game.freeCamera) {
+                config::ImGuiCheckbox("Invert Camera X Axis", getSettings().game.invertCameraXAxis);
+                config::ImGuiCheckbox("Invert Camera Y Axis", getSettings().game.invertCameraYAxis);
+                config::ImGuiSliderFloat("Free Camera Sensitivity", getSettings().game.freeCameraSensitivity, 0.5f, 2.0f, "%.1f");
+            } else {
+                config::ImGuiCheckbox("Invert Camera X Axis", getSettings().game.invertCameraXAxis);
+            }
 
             ImGui::SeparatorText("Gyro");
 
@@ -444,6 +452,7 @@ namespace dusk {
 
     void ImGuiMenuGame::drawInterfaceMenu() {
         if (ImGui::BeginMenu("Interface")) {
+            config::ImGuiCheckbox("Achievement Notifications", getSettings().game.enableAchievementNotifications);
             config::ImGuiCheckbox("Skip Pre-Launch UI", getSettings().backend.skipPreLaunchUI);
             config::ImGuiCheckbox("Show Pipeline Compilation", getSettings().backend.showPipelineCompilation);
 #if DUSK_ENABLE_SENTRY_NATIVE
@@ -956,7 +965,7 @@ namespace dusk {
         ImGui::SameLine();
 
         // Options panel
-        ImGuiBeginGroupPanel("Options", ImVec2(150 * scale, 20 * scale));
+        ImGuiBeginGroupPanel("Options", ImVec2(150 * scale, -1));
 
         if (deadZones != nullptr) {
             if (ImGui::Checkbox("Enable Dead Zones", &deadZones->useDeadzones)) {
@@ -966,7 +975,28 @@ namespace dusk {
                 PADSerializeMappings();
             }
         }
-
+        
+        if (PADSupportsRumbleIntensity(m_controllerConfig.m_selectedPort)) {
+            ImGuiBeginGroupPanel("Rumble Intensity", ImVec2(150 * scale, -1));
+            u16 low;
+            u16 high;
+            (void)PADGetRumbleIntensity(m_controllerConfig.m_selectedPort, &low, &high);
+            float fLow = (static_cast<float>(low) / 32767.f) * 100.f;
+            bool changed = ImGui::SliderFloat("Low", &fLow, 0.f, 100.f, "%.0f%%");
+            float fHigh = (static_cast<float>(high) / 32767.f) * 100.f;
+            changed |= ImGui::SliderFloat("High", &fHigh, 0.f, 100.f, "%.0f%%");
+            if (changed) {
+                PADSetRumbleIntensity(m_controllerConfig.m_selectedPort,
+                    static_cast<u16>((fLow / 100) * 32767),
+                    static_cast<u16>((fHigh / 100) * 32767));
+                PADSerializeMappings();
+            }
+            if (ImGui::Button(fmt::format("{0}...##rumbleTest", m_controllerConfig.m_isRumbling ? "Stop": "Test").c_str(), {-1, 0})) {
+                PADControlMotor(m_controllerConfig.m_selectedPort, !m_controllerConfig.m_isRumbling ? PAD_MOTOR_RUMBLE : PAD_MOTOR_STOP_HARD);
+                m_controllerConfig.m_isRumbling ^= 1;
+            } 
+            ImGuiEndGroupPanel();
+        }
         ImGuiEndGroupPanel();
 
         ImGui::End();
