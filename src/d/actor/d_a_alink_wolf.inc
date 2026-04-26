@@ -404,18 +404,18 @@ void daAlink_c::changeLink(int param_0) {
     }
 
     mpKanteraModel = initModelEnv(static_cast<J3DModelData*>(dComIfG_getObjectRes(mArcName, "al_kantera.bmd")), 0);
-    mpGhostLanternModel = initModelEnv(static_cast<J3DModelData*>(dComIfG_getObjectRes(mArcName, "al_ghostlantern.bmd")), 0);
+    mpGhostLanternModel = initModelEnv(static_cast<J3DModelData*>(dComIfG_getObjectRes(mArcName, "ghost_lantern.bmd")), 0);
 
     modelData = static_cast<J3DModelData*>(dComIfG_getObjectRes(mArcName, "ef_ktGlow.bmd"));
     mpKanteraGlowModel = initModel(modelData, 0x200);
-    mpGhostLanternGlowModel = initModel(modelData, 0x200);
-
     mpKanteraGlowBtk = static_cast<J3DAnmTextureSRTKey*>(dComIfG_getObjectRes(mArcName, "ef_ktGlow.btk"));
     mpKanteraGlowBtk->setFrame(0.0f);
     mpKanteraGlowBtk->searchUpdateMaterialID(modelData);
     modelData->entryTexMtxAnimator(mpKanteraGlowBtk);
 
-    mpGhostLanternGlowBtk = static_cast<J3DAnmTextureSRTKey*>(dComIfG_getObjectRes(mArcName, "ef_ktGlow.btk"));
+    modelData = static_cast<J3DModelData*>(dComIfG_getObjectRes(mArcName, "ef_ghost_lantern.bmd"));
+    mpGhostLanternGlowModel = initModel(modelData, 0x200);
+    mpGhostLanternGlowBtk = static_cast<J3DAnmTextureSRTKey*>(dComIfG_getObjectRes(mArcName, "ef_ghost_lantern.btk"));
     mpGhostLanternGlowBtk->setFrame(0.0f);
     mpGhostLanternGlowBtk->searchUpdateMaterialID(modelData);
     modelData->entryTexMtxAnimator(mpGhostLanternGlowBtk);

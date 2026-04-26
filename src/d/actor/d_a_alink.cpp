@@ -6097,6 +6097,7 @@ void daAlink_c::setItemMatrix(int param_0) {
             mpGhostLanternModel->setBaseTRMtx(mDoMtx_stack_c::get());
 
             modelCalc(mpGhostLanternModel);
+            mGhostLanternFlamePos.y -= 25.0f;
             mDoMtx_stack_c::transS(mGhostLanternFlamePos);
             mpGhostLanternGlowModel->setBaseTRMtx(mDoMtx_stack_c::get());
             modelCalc(mpGhostLanternGlowModel);
@@ -18585,6 +18586,21 @@ int daAlink_c::execute() {
             setLight();
             setEffect();
 
+            if (mEquipItem == dItemNo_LENS_OF_TRUTH_e) {
+                u16 effName;
+                dPa_levelEcallBack* callbackp;
+                JPABaseEmitter* emitterp;
+
+                effName = ID_ZI_J_KANTERA_FIRE;
+                callbackp = NULL;
+
+                ghostLanternFlameEffect = dComIfGp_particle_set(
+                    ghostLanternFlameEffect, effName, &mGhostLanternFlamePos, &tevStr, &shape_angle,
+                    NULL, 0xFF, callbackp, -1, NULL, NULL, NULL);
+            } else {
+                stopDrawParticle(ghostLanternFlameEffect);
+            }
+
             if (mClothesChangeWaitTimer != 0) {
                 mDoMtx_stack_c::copy(mpLinkModel->getBaseTRMtx());
 
@@ -19439,6 +19455,18 @@ int daAlink_c::draw() {
         }
     }
 
+    if (mEquipItem == dItemNo_LENS_OF_TRUTH_e) {
+        JPABaseEmitter* emitter_gl = dComIfGp_particle_getEmitter(ghostLanternFlameEffect);
+        if (emitter_gl != NULL) {
+            daE_HP_c* foundPoe = (daE_HP_c*)fopAcM_Search(srchPoe, this);
+            if (checkPlayerNoDraw() || foundPoe == NULL) {
+                emitter_gl->stopDrawParticle();
+            } else {
+                emitter_gl->playDrawParticle();
+            }
+        }
+    }
+
     if (mClothesChangeWaitTimer != 0) {
         if (mProcID == PROC_METAMORPHOSE) {
             if (mProcVar3.field_0x300e > 0) {
@@ -19744,9 +19772,12 @@ int daAlink_c::draw() {
         }
 
         if (mEquipItem == dItemNo_LENS_OF_TRUTH_e) {
+            daE_HP_c* foundPoe = (daE_HP_c*)fopAcM_Search(srchPoe, this);
             modelDraw(mpGhostLanternModel, isPlayerNoDraw);
-            preGhostLanternDraw();
-            modelDraw(mpGhostLanternGlowModel, isPlayerNoDraw);
+            if (foundPoe != NULL) {
+                preGhostLanternDraw();
+                modelDraw(mpGhostLanternGlowModel, isPlayerNoDraw);
+            }
         }
 
         if (checkEquipHeavyBoots()) {

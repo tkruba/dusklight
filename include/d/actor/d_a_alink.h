@@ -4380,6 +4380,7 @@ public:
     /* 0x03194 */ int field_0x3194;
     /* 0x03198 */ int field_0x3198;
     /* 0x0319C */ int field_0x319c;
+    /* 0x0319C */ int ghostLanternFlameEffect;
     /* 0x031A0 */ u32 mModeFlg;
     /* 0x031A4 */ int field_0x31a4;
     /* 0x031A8 */ u32 field_0x31a8[2];
@@ -4520,6 +4521,9 @@ public:
     /* 0x03618 */ cXyz field_0x3618;
     /* 0x03624 */ cXyz field_0x3624;
     /* 0x03630 */ cXyz field_0x3630;
+    /* 0x03618 */ cXyz ghost_lantern_0x3618;
+    /* 0x03624 */ cXyz ghost_lantern_0x3624;
+    /* 0x03630 */ cXyz ghost_lantern_0x3630;
     /* 0x0363C */ cXyz field_0x363c[4];
     /* 0x0366C */ cXyz field_0x366c[4];
     /* 0x0369C */ cXyz field_0x369c;

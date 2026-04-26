@@ -143,10 +143,10 @@ int daAlink_c::ghostLanternModelCallBack() {
     cXyz sp44;
     mDoMtx_multVecZero(J3DSys::mCurrentMtx, &sp44);
 
-    field_0x3630 = field_0x3624;
-    field_0x3624 = mGhostLanternFlamePos;
+    ghost_lantern_0x3630 = ghost_lantern_0x3624;
+    ghost_lantern_0x3624 = mGhostLanternFlamePos;
 
-    cXyz sp38 = (mGhostLanternFlamePos - sp44) + field_0x3618;
+    cXyz sp38 = (mGhostLanternFlamePos - sp44) + ghost_lantern_0x3618;
     sp38.y -= 3.0f;
 
     cXyz sp2C;
@@ -167,7 +167,7 @@ int daAlink_c::ghostLanternModelCallBack() {
     static Vec const kandelaarOffset = {0.0f, -17.0f, 0.0f};
     mDoMtx_stack_c::multVec(&kandelaarOffset, &mGhostLanternFlamePos);
 
-    field_0x3618 = (mGhostLanternFlamePos - field_0x3624) * 0.9f;
+    ghost_lantern_0x3618 = (mGhostLanternFlamePos - ghost_lantern_0x3624) * 0.9f;
 
     if (!checkEndResetFlg1(ERFLG1_UNK_8)) {
         f32 scale = JMAFastSqrt(SQUARE(J3DSys::mCurrentMtx[0][0]) + SQUARE(J3DSys::mCurrentMtx[1][0]) + SQUARE(J3DSys::mCurrentMtx[2][0]));
@@ -233,18 +233,16 @@ void* daAlink_c::srchPoe(void* i_actor, void* i_this) {
 void daAlink_c::preGhostLanternDraw() {
     J3DMaterial* mat_p = mpGhostLanternGlowModel->getModelData()->getMaterialNodePointer(0);
 
-    daE_HP_c* foundPoe = (daE_HP_c*)fopAcM_Search(srchPoe, this);
-
     J3DGXColorS10 color;
-    color.r = 0;
-    color.g = 0;
-    color.b = foundPoe != NULL ? 255 : 0;
-    color.a = foundPoe != NULL ? 255 : 0;
+    color.r = 64;
+    color.g = 128;
+    color.b = 128;
+    color.a = 255;
     mat_p->setTevColor(1, &color);
 
-    color.r = 0;
-    color.g = 0;
-    color.b = foundPoe != NULL ? 255 : 0;
+    color.r = 64;
+    color.g = 128;
+    color.b = 128;
     mat_p->setTevColor(2, &color);
 
     cXyz proj;
@@ -267,7 +265,8 @@ void daAlink_c::preGhostLanternDraw() {
     f32 near_ = dComIfGd_getView()->near_;
     f32 far_ = dComIfGd_getView()->far_;
 
-    mDoLib_pos2camera(&mKandelaarFlamePos, &proj);
+    mDoLib_pos2camera(&mGhostLanternFlamePos, &proj);
+
     proj.z += 30.0f;
     if (proj.z > -0.01f) {
         proj.z = -0.01f;
@@ -332,6 +331,7 @@ void daAlink_c::setKandelaarModel() {
         field_0x3630 = field_0x3624;
         field_0x3624 = mKandelaarFlamePos;
         field_0x3618 = cXyz::Zero;
+        ghost_lantern_0x3618 = cXyz::Zero;
 
         field_0x32c8 = 0;
         field_0x3448 = 0.0f;
