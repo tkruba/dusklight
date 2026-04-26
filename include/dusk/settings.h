@@ -89,6 +89,13 @@ struct UserSettings {
 
 
         // Graphics
+        ConfigVar<bool> enhancedLighting;
+        ConfigVar<bool> enableSpecularLighting;
+        ConfigVar<bool> enableRimLighting;
+        ConfigVar<float> specularIntensity;
+        ConfigVar<float> rimIntensity;
+        ConfigVar<float> ambientLightMultiplier;
+        ConfigVar<float> diffuseLightMultiplier;
         ConfigVar<BloomMode> bloomMode;
         ConfigVar<float> bloomMultiplier;
         ConfigVar<bool> disableWaterRefraction;

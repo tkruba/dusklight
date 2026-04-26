@@ -60,6 +60,7 @@
 
 #include <aurora/aurora.h>
 #include <aurora/event.h>
+#include <aurora/gfx.h>
 #include <aurora/main.h>
 #include <aurora/dvd.h>
 #include <dolphin/dvd.h>
@@ -558,6 +559,13 @@ int game_main(int argc, char* argv[]) {
         config.allowTextureReplacements = true;
         config.allowTextureDumps = false;
         auroraInfo = aurora_initialize(argc, argv, &config);
+        aurora_set_enhanced_lighting(dusk::getSettings().game.enhancedLighting);
+        aurora_set_specular_lighting(dusk::getSettings().game.enableSpecularLighting);
+        aurora_set_rim_lighting(dusk::getSettings().game.enableRimLighting);
+        aurora_set_specular_intensity(dusk::getSettings().game.specularIntensity);
+        aurora_set_rim_intensity(dusk::getSettings().game.rimIntensity);
+        aurora_set_ambient_multiplier(dusk::getSettings().game.ambientLightMultiplier);
+        aurora_set_diffuse_multiplier(dusk::getSettings().game.diffuseLightMultiplier);
     }
 
 #ifdef DUSK_DISCORD_RPC

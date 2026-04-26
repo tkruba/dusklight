@@ -167,6 +167,60 @@ namespace dusk {
 
             config::ImGuiCheckbox("Enable Depth of Field", getSettings().game.enableDepthOfField);
 
+            ImGui::SeparatorText("Lighting");
+
+            if (config::ImGuiCheckbox("Enhanced Lighting", getSettings().game.enhancedLighting)) {
+                aurora_set_enhanced_lighting(getSettings().game.enhancedLighting);
+            }
+            if (ImGui::IsItemHovered()) {
+                ImGui::SetTooltip("Enables per-pixel lighting with Blinn-Phong shading.");
+            }
+
+            const bool enhancedLightingEnabled = getSettings().game.enhancedLighting.getValue();
+            if (!enhancedLightingEnabled) { ImGui::BeginDisabled(); }
+
+            if (config::ImGuiCheckbox("Specular Highlights", getSettings().game.enableSpecularLighting)) {
+                aurora_set_specular_lighting(getSettings().game.enableSpecularLighting);
+            }
+            if (config::ImGuiCheckbox("Rim Lighting", getSettings().game.enableRimLighting)) {
+                aurora_set_rim_lighting(getSettings().game.enableRimLighting);
+            }
+
+            {
+                float v = getSettings().game.specularIntensity.getValue();
+                if (ImGui::SliderFloat("Specular Intensity", &v, 0.0f, 1.0f, "%.2f")) {
+                    getSettings().game.specularIntensity.setValue(v);
+                    aurora_set_specular_intensity(v);
+                    config::Save();
+                }
+            }
+            {
+                float v = getSettings().game.rimIntensity.getValue();
+                if (ImGui::SliderFloat("Rim Intensity", &v, 0.0f, 0.5f, "%.3f")) {
+                    getSettings().game.rimIntensity.setValue(v);
+                    aurora_set_rim_intensity(v);
+                    config::Save();
+                }
+            }
+            {
+                float v = getSettings().game.ambientLightMultiplier.getValue();
+                if (ImGui::SliderFloat("Ambient Multiplier", &v, 0.0f, 3.0f, "%.2f")) {
+                    getSettings().game.ambientLightMultiplier.setValue(v);
+                    aurora_set_ambient_multiplier(v);
+                    config::Save();
+                }
+            }
+            {
+                float v = getSettings().game.diffuseLightMultiplier.getValue();
+                if (ImGui::SliderFloat("Diffuse Multiplier", &v, 0.0f, 3.0f, "%.2f")) {
+                    getSettings().game.diffuseLightMultiplier.setValue(v);
+                    aurora_set_diffuse_multiplier(v);
+                    config::Save();
+                }
+            }
+
+            if (!enhancedLightingEnabled) { ImGui::EndDisabled(); }
+
             ImGui::EndMenu();
         }
     }

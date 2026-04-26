@@ -1,6 +1,6 @@
 #include "fmt/format.h"
 #include "imgui.h"
-#include "aurora/gfx.h"
+#include <aurora/gfx.h>
 
 #include "ImGuiConfig.hpp"
 #include "dusk/hotkeys.h"
@@ -80,6 +80,12 @@ namespace dusk {
 
             auto& collisionView = getTransientSettings().collisionView;
             if (ImGui::BeginMenu("Graphics Settings")) {
+                bool enhancedLighting = getSettings().game.enhancedLighting;
+                if (ImGui::Checkbox("Enhanced Lighting", &enhancedLighting)) {
+                    getSettings().game.enhancedLighting.setValue(enhancedLighting);
+                    aurora_set_enhanced_lighting(enhancedLighting);
+                    config::Save();
+                }
                 bool disableWaterRefraction = getSettings().game.disableWaterRefraction;
                 if (ImGui::Checkbox("Disable Water Refraction", &disableWaterRefraction)) {
                     getSettings().game.disableWaterRefraction.setValue(disableWaterRefraction);

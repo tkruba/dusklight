@@ -48,6 +48,13 @@ UserSettings g_userSettings = {
         .enableAchievementNotifications {"game.enableAchievementNotifications", false},
 
         // Graphics
+        .enhancedLighting {"game.enhancedLighting", true},
+        .enableSpecularLighting {"game.enableSpecularLighting", true},
+        .enableRimLighting {"game.enableRimLighting", true},
+        .specularIntensity {"game.specularIntensity", 0.2f},
+        .rimIntensity {"game.rimIntensity", 0.08f},
+        .ambientLightMultiplier {"game.ambientLightMultiplier", 1.0f},
+        .diffuseLightMultiplier {"game.diffuseLightMultiplier", 1.0f},
         .bloomMode {"game.bloomMode", BloomMode::Classic},
         .bloomMultiplier {"game.bloomMultiplier", 1.0f},
         .disableWaterRefraction {"game.disableWaterRefraction", false},
@@ -151,6 +158,13 @@ void registerSettings() {
     Register(g_userSettings.game.freeCameraSensitivity);
     Register(g_userSettings.game.disableMainHUD);
     Register(g_userSettings.game.pauseOnFocusLost);
+    Register(g_userSettings.game.enhancedLighting);
+    Register(g_userSettings.game.enableSpecularLighting);
+    Register(g_userSettings.game.enableRimLighting);
+    Register(g_userSettings.game.specularIntensity);
+    Register(g_userSettings.game.rimIntensity);
+    Register(g_userSettings.game.ambientLightMultiplier);
+    Register(g_userSettings.game.diffuseLightMultiplier);
     Register(g_userSettings.game.bloomMode);
     Register(g_userSettings.game.bloomMultiplier);
     Register(g_userSettings.game.disableWaterRefraction);
