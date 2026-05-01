@@ -16,6 +16,7 @@
 #include <cstring>
 
 #if TARGET_PC
+#include "dusk/randomizer/game/flags.h"
 #include "dusk/randomizer/game/tools.h"
 #include "dusk/randomizer/game/stages.h"
 #endif
@@ -795,6 +796,22 @@ u16 dMsgFlow_c::query001(mesg_flow_node_branch* i_flowNode_p, fopAc_ac_c* i_spea
     const u16 prm0 = i_flowNode_p->param;
     u16 ret = dComIfGs_isEventBit(dSv_event_flag_c::saveBitLabels[prm0]) == false;
 
+#if TARGET_PC
+    if (randomizer_IsActive()) {
+        switch (prm0) {
+        case 0xFA: // MDH Completed
+        {
+            // Check to see if currently in Jovani's house
+            if (playerIsInRoomStage(5, allStages[Castle_Town_Shops])) {
+                return 0; // Return 0 to be able to turn souls into Jovani pre MDH
+            }
+            break;
+        }
+        default:
+            break;
+        }
+    }
+#endif
     if (param_2 != 0) {
         // "Flag Check"
         OS_REPORT("\x1B[44;33mフラグチェック　　　　　　　　　　　\x1B[m|:");
@@ -1697,6 +1714,13 @@ u16 dMsgFlow_c::query049(mesg_flow_node_branch* i_flowNode_p, fopAc_ac_c* i_spea
     } else {
         ret = 4;
     }
+
+#if TARGET_PC
+    // Split up getting both rewards in randomizer
+    if (randomizer_IsActive() && ret == 4 && !dComIfGs_isEventBit(GOT_BOTTLE_FROM_JOVANI)) {
+        ret = 3;
+    }
+#endif
 
     if (param_2 != 0) {
         // "Collected Souls count"
