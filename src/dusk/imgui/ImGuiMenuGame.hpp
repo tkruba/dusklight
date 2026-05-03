@@ -55,22 +55,12 @@ namespace dusk {
         static void resetForSpeedrunMode();
 
     private:
-        void drawAudioMenu();
-        void drawInputMenu();
-        void drawGraphicsMenu();
-        void drawGameplayMenu();
-        void drawCheatsMenu();
-        void drawInterfaceMenu();
-
         struct {
             int m_selectedPort = 0;
             bool m_isReading = false;
             PADButtonMapping* m_pendingButtonMapping = nullptr;
             PADAxisMapping* m_pendingAxisMapping = nullptr;
             int m_pendingPort = -1;
-            bool m_waitForInputRelease = false;
-            bool m_suppressRemapActivationUntilRelease = false;
-            int m_suppressRemapActivationPort = -1;
             bool m_isRumbling = false;
         } m_controllerConfig;
 

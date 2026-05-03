@@ -17,6 +17,7 @@ UserSettings g_userSettings = {
         .soundEffectsVolume {"audio.soundEffectsVolume", 100},
         .fanfareVolume {"audio.fanfareVolume", 100},
         .enableReverb {"audio.enableReverb", true},
+        .enableHrtf {"audio.enableHrtf", false},
     },
 
     .game = {
@@ -37,9 +38,11 @@ UserSettings g_userSettings = {
         .fastClimbing {"game.fastClimbing", false},
         .noMissClimbing {"game.noMissClimbing", false},
         .fastTears {"game.fastTears", false},
+        .no2ndFishForCat {"game.no2ndFishForCat", false},
         .instantSaves {"game.instantSaves", false},
         .instantText {"game.instantText", false},
         .sunsSong {"game.sunsSong", false},
+        .autoSave {"game.autoSave", false},
 
         // Preferences
         .enableMirrorMode {"game.enableMirrorMode", false},
@@ -52,7 +55,7 @@ UserSettings g_userSettings = {
         .bloomMode {"game.bloomMode", BloomMode::Classic},
         .bloomMultiplier {"game.bloomMultiplier", 1.0f},
         .disableWaterRefraction {"game.disableWaterRefraction", false},
-        .enableFrameInterpolation = {"game.enableFrameInterpolation", false},
+        .enableFrameInterpolation {"game.enableFrameInterpolation", false},
         .internalResolutionScale {"game.internalResolutionScale", 0},
         .shadowResolutionMultiplier {"game.shadowResolutionMultiplier", 1},
         .enableDepthOfField {"game.enableDepthOfField", true},
@@ -133,6 +136,7 @@ void registerSettings() {
     Register(g_userSettings.audio.soundEffectsVolume);
     Register(g_userSettings.audio.fanfareVolume);
     Register(g_userSettings.audio.enableReverb);
+    Register(g_userSettings.audio.enableHrtf);
 
     // Game
     Register(g_userSettings.game.language);
@@ -149,9 +153,11 @@ void registerSettings() {
     Register(g_userSettings.game.instantDeath);
     Register(g_userSettings.game.fastClimbing);
     Register(g_userSettings.game.fastTears);
+    Register(g_userSettings.game.no2ndFishForCat);
     Register(g_userSettings.game.instantSaves);
     Register(g_userSettings.game.instantText);
     Register(g_userSettings.game.sunsSong);
+    Register(g_userSettings.game.autoSave);
     Register(g_userSettings.game.enableMirrorMode);
     Register(g_userSettings.game.invertCameraXAxis);
     Register(g_userSettings.game.invertCameraYAxis);
