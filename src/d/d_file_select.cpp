@@ -4321,11 +4321,29 @@ void dFile_select_c::MemCardStatCheck() {
         mDoMemCd_Load();
         mCardCheckProc = MEMCARDCHECKPROC_LOAD_WAIT;
         break;
+#if TARGET_PC
+    case 1: // no save file
+        static bool created = false;
+        if (!created) {
+            // create save file without prompting
+            setInitSaveData();
+            dataSave();
+            created = true;
+        } else {
+            // we created the save file but we can't see it yet
+            // reset card state to try loading again on next tick
+            g_mDoMemCd_control.mCardState = mDoMemCd_Ctrl_c::CARD_STATE_READY_e;
+        }
+        break;
+    case 4: // card is writing
+        mDoMemCd_SaveSync(); // resets card state to ready when finished
+        break;
+#else
     case 1:
         errDispInitSet(22, 0);
         field_0x0280 = true;
         mNextCardCheckProc = MEMCARDCHECKPROC_MAKE_GAMEFILE_SEL;
-        break;
+#endif
     }
 #else
     switch (status) {
