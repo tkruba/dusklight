@@ -4322,7 +4322,7 @@ void dFile_select_c::MemCardStatCheck() {
         mCardCheckProc = MEMCARDCHECKPROC_LOAD_WAIT;
         break;
 #if TARGET_PC
-    case 1: // no save file
+    case 1: { // no save file
         static bool created = false;
         if (!created) {
             // create save file without prompting
@@ -4335,6 +4335,7 @@ void dFile_select_c::MemCardStatCheck() {
             g_mDoMemCd_control.mCardState = mDoMemCd_Ctrl_c::CARD_STATE_READY_e;
         }
         break;
+    }
     case 4: // card is writing
         mDoMemCd_SaveSync(); // resets card state to ready when finished
         break;
