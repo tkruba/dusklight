@@ -4344,6 +4344,7 @@ void dFile_select_c::MemCardStatCheck() {
         errDispInitSet(22, 0);
         field_0x0280 = true;
         mNextCardCheckProc = MEMCARDCHECKPROC_MAKE_GAMEFILE_SEL;
+        break;
 #endif
     }
 #else
